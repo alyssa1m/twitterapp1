@@ -23,8 +23,7 @@ class LoginViewController: UIViewController {
             self.performSegue(withIdentifier: "loginToHome", sender: self)
         }
     }
-    
-    @IBAction func onLoginButton(_sender: Any ){
+    @IBAction func onLoginButton(_ sender: UIButton) {
         
         let myUrl = "https://api.twitter.com/oauth/request_token"
         
@@ -36,7 +35,12 @@ class LoginViewController: UIViewController {
         }, failure: { (Error) in
             print("Could not log in.")
         })
+        
+        
+        
     }
+    
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
