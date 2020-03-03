@@ -32,9 +32,9 @@ class HomeTableViewController: UITableViewController {
         numberOfTweet = 20
         
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let myParams = ["count": numberOfTweet]
+        let myParams = ["count": numberOfTweet] as [String: Any]
         
-        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams as Any as! [String : Any], success: {(tweets: [NSDictionary]) in
+        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: {(tweets: [NSDictionary]) in
         
             self.tweetArray.removeAll()
             for tweet in tweets {
@@ -45,7 +45,7 @@ class HomeTableViewController: UITableViewController {
             self.myRefreshControl.endRefreshing()
             
         }, failure: {(Error) in
-            print ("Oh no! Could not retrieve tweets. For reason: \(Error.localizedDescription)")
+            print ("Oh no! Could not retrieve tweets. For reason: \(Error)")
         })
         
     }
@@ -80,11 +80,10 @@ class HomeTableViewController: UITableViewController {
     
     
     @IBAction func onLogout(_ sender: UIBarButtonItem) {
-        
+        UserDefaults.standard.set(false, forKey: "loggedIn")
         TwitterAPICaller.client?.logout()
+        print("LOGIN_STATE: \(UserDefaults.standard.bool(forKey: "loggedIn"))")
         self.dismiss(animated: true, completion: nil)
-        
-        UserDefaults.standard.set(false, forKey: "userloggedIn")
     }
     
     

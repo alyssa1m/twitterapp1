@@ -18,8 +18,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        if UserDefaults.standard.bool(forKey: "userLoggedIn") == true {
-            
+        if UserDefaults.standard.bool(forKey: "loggedIn") == true {
             self.performSegue(withIdentifier: "loginToHome", sender: self)
         }
     }
@@ -29,7 +28,7 @@ class LoginViewController: UIViewController {
         
         TwitterAPICaller.client?.login(url: myUrl, success: {
             
-            UserDefaults.standard.set(true, forKey: "userLoggedIn")
+            UserDefaults.standard.set(true, forKey: "loggedIn")
             self.performSegue(withIdentifier: "loginToHome", sender: self)
             
         }, failure: { (Error) in
