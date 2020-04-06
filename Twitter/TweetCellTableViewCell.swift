@@ -21,23 +21,49 @@ class TweetCellTableViewCell: UITableViewCell {
     var favorited:Bool = false
     var tweetId: Int = -1
     
+    
     @IBAction func favoriteTweet(_ sender: Any) {
         let tobeFavorited = !favorited
         if (tobeFavorited) {
-            TwitterAPICaller.client?.favoriteTweet(tweetId: tweetId, success: self.setFavorite(_isFavorited: true), failure: {(error) in
-                print("Favorite did not succeed: \(error)")
+            TwitterAPICaller.client?.favoriteTweet(tweetId: tweetId, success: {
+                self.setFavorite(_isFavorited: true)
+            }, failure: { (error) in
+                print("Could not favorite tweet: \(error)")
             })
-        }else{
-            TwitterAPICaller.client?.unfavoriteTweet(tweetId: tweetId, success: self.setFavorite(false), failure: {(error) in
-                print("unfavorite did not succeed: \(error)")
+        } else {
+            TwitterAPICaller.client?.unfavoriteTweet(tweetId: tweetId, success: {
+                self.setFavorite(_isFavorited: false)
+            }, failure: { (error) in
+                print("Could not unfavorite tweet: \(error)")
             })
+        }
+            
+            
+            
+            
+    }
+        
+    @IBAction func retweet(_ sender: Any) {
+        TwitterAPICaller.client?.retweet(tweetId: tweetId, success: {
+            self.setRetweeted(_isRetweeted: true) 
+        }, failure: { (error) in
+            print("Error retweeting tweet. \(error)")
+        })
+    }
+    
+    func setRetweeted (_isRetweeted: Bool){
+        if (_isRetweeted){
+            retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControl.State.normal)
+            retweetButton.isEnabled = false
+        }else {
+            retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
+            retweetButton.isEnabled = true
+            
         }
     }
     
-    @IBAction func retweet(_ sender: Any) {
-    }
     
-   
+    
     func setFavorite(_isFavorited:Bool){
         favorited = _isFavorited
     if (favorited) {
